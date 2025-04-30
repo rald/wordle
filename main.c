@@ -105,6 +105,7 @@ int main() {
         if (!strcmp(rword, word)) {
             puts("you got it");
             quit = true;
+            continue;
         }
         if (++n == 6) {
             printf("it is %s\n", rword);
