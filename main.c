@@ -5,7 +5,8 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define WORDS_FILE "words.txt"
+#define RND_WORDS_FILE "rndwords.txt"
+#define ALL_WORDS_FILE "allwords.txt"
 #define STRING_MAX 256
 
 char *removenl(char *line) {
@@ -41,7 +42,7 @@ char *getrandword(char *filename) {
 
 bool find(const char *word) {
     char line[STRING_MAX];
-    FILE *fp = fopen(WORDS_FILE, "r");
+    FILE *fp = fopen(ALL_WORDS_FILE, "r");
     if (!fp) return false;
     while (fgets(line, STRING_MAX, fp)) {
         removenl(line);
@@ -92,7 +93,7 @@ int main() {
     srand(time(NULL));
     bool quit = false;
     char guess[STRING_MAX];
-    char *randomWord = getrandword(WORDS_FILE);
+    char *randomWord = getrandword(RND_WORDS_FILE);
     char n = 0;
     if (!randomWord) return -1;
     strupr(randomWord);
