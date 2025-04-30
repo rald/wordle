@@ -1,4 +1,4 @@
-# wordle
+# textbased game wordle using c-language
 
 capital letter -> correctly placed
 
