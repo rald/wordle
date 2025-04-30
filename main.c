@@ -48,9 +48,9 @@ char *getrandword(char *filename) {
 }
 
 
-bool find(char *word) {
+bool find(const char *word) {
   char line[STRING_MAX];
-  FILE *fp=fopen("words.txt","r");
+  FILE *fp=fopen(WORDS_FILE,"r");
   while(fgets(line,STRING_MAX,fp)) {
     removenl(line);
     strupr(line);
@@ -63,6 +63,16 @@ bool find(char *word) {
 void wordle(const char* randomWord, const char* guess) {
   char result[6] = {0};
   int used[5] = {0};
+
+  if(strlen(guess)!=5) {
+    puts("five lettered words only");
+    return;
+  }
+
+  if(!find(guess)) {
+    printf("word %s not in list\n",guess);
+    return;
+  }
 
   for (int i = 0; i < 5; i++) {
     if (guess[i] == randomWord[i]) {
@@ -114,16 +124,6 @@ int main() {
 
     removenl(word);
     strupr(word);
-
-    if(strlen(word)!=5) {
-      puts("five lettered words only");
-      continue;
-    }
-
-    if(!find(word)) {
-      printf("unknown word %s\n",word);
-      continue;
-    }
 
     wordle(rword,word);
 
