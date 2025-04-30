@@ -113,7 +113,11 @@ int main() {
   while(!quit) {
 
     printf("> ");
-    fgets(word,STRING_MAX,stdin);
+
+    if(!fgets(word,STRING_MAX,stdin)) {
+      break;
+    }
+
     removenl(word);
     strupr(word);
 
