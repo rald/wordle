@@ -106,8 +106,7 @@ int main() {
             puts("you got it");
             quit = true;
         }
-        n++;
-        if (n == 6) {
+        if (++n == 6) {
             printf("it is %s\n", rword);
             quit = true;
         }
