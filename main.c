@@ -91,24 +91,24 @@ void wordle(const char *randomWord, const char *guess) {
 int main() {
     srand(time(NULL));
     bool quit = false;
-    char word[STRING_MAX];
-    char *rword = getrandword(WORDS_FILE);
+    char guess[STRING_MAX];
+    char *randomWord = getrandword(WORDS_FILE);
     char n = 0;
-    if (!rword) return -1;
-    strupr(rword);
+    if (!randomWord) return -1;
+    strupr(randomWord);
     while (!quit) {
         printf("> ");
-        if (!fgets(word, STRING_MAX, stdin)) break;
-        removenl(word);
-        strupr(word);
-        wordle(rword, word);
-        if (!strcmp(rword, word)) {
+        if (!fgets(guess, STRING_MAX, stdin)) break;
+        removenl(guess);
+        strupr(guess);
+        wordle(randomWord, guess);
+        if (!strcmp(randomWord, guess)) {
             puts("you got it");
             quit = true;
             continue;
         }
         if (++n == 6) {
-            printf("it is %s\n", rword);
+            printf("it is %s\n", randomWord);
             quit = true;
         }
     }
