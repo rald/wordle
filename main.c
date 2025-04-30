@@ -6,12 +6,8 @@
 #include <time.h>
 
 
+#define WORDS_FILE "words.txt"
 #define STRING_MAX 256
-
-
-double drand() {
-  return rand()/(RAND_MAX+1.0);
-}
 
 
 char *removenl(char *line) {
@@ -31,23 +27,24 @@ char *strupr(char *s) {
 }
 
 
-char *getrandword() {
+char *getrandword(char *filename) {
+  static char selected[STRING_MAX];
   char line[STRING_MAX];
-  char rstr[STRING_MAX];
-  FILE *fp=fopen("words.txt","r");
+  FILE *file=fopen(filename,"r");
 
-  long n=0;
-  while(fgets(line,STRING_MAX,fp)) {
-    removenl(line);
-    n++;
-    if(1.0/n>drand()) {
-      strcpy(rstr,line);
+  if(!file) return NULL;
+
+  size_t n=0;
+  while(fgets(line,sizeof(line),file)) {
+    if(rand()%(++n)==0) {
+      removenl(line);
+      strncpy(selected,line,STRING_MAX);
     }
   }
 
-  fclose(fp);
+  fclose(file);
 
-  return strdup(rstr);
+  return n>0?selected:NULL;
 }
 
 
@@ -104,7 +101,7 @@ int main() {
 
   bool quit=false;
   char word[STRING_MAX];
-  char *rword=getrandword();
+  char *rword=getrandword(WORDS_FILE);
   char *clue;
   char n=0;
 
@@ -148,9 +145,6 @@ int main() {
   }
 
   puts("game over");
-
-  free(rword);
-  rword=NULL;
 
   return 0;
 }
