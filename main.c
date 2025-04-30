@@ -60,38 +60,33 @@ bool find(char *word) {
 }
 
 
-char *getclue(char *r,char *w) {
-  char *clue=calloc(6,sizeof(*clue));
-  char w1[STRING_MAX]={0};
-  char w2[STRING_MAX]={0};
+void wordle(const char* randomWord, const char* guess) {
+  char result[6] = {0};
+  int used[5] = {0};
 
-  strcpy(w1,strupr(r));
-  strcpy(w2,strupr(w));
-
-  for(int i=0;i<5;i++) {
-    if(w1[i]==w2[i]) {
-      clue[i]=toupper(w1[i]);
-      w1[i]='\0';
-      w2[i]='\0';
+  for (int i = 0; i < 5; i++) {
+    if (guess[i] == randomWord[i]) {
+      result[i] = toupper(guess[i]);
+      used[i] = 1;
     }
   }
 
-  for(int i=0;i<5;i++) {
-    for(int j=0;j<5;j++) {
-      if(w1[j]!='\0' && w2[i]!='\0' && w1[j]==w2[i]) {
-        clue[i]=tolower(w1[j]);
-        w1[j]='\0';
-        w2[i]='\0';
+  for (int i = 0; i < 5; i++) {
+    if (result[i] != 0) continue;
+    for (int j = 0; j < 5; j++) {
+      if (!used[j] && guess[i] == randomWord[j]) {
+        result[i] = tolower(guess[i]);
+        used[j] = 1;
         break;
       }
     }
+
+    if (result[i] == 0) {
+      result[i] = '?';
+    }
   }
 
-  for(int i=0;i<5;i++) {
-    if(clue[i]=='\0') clue[i]='?';
-  }
-
-  return clue;
+  printf("  %s\n",result);
 }
 
 
@@ -104,6 +99,8 @@ int main() {
   char *rword=getrandword(WORDS_FILE);
   char *clue;
   char n=0;
+
+  if(!rword) return -1;
 
   strupr(rword);
 
@@ -128,9 +125,7 @@ int main() {
       continue;
     }
 
-    clue=getclue(rword,word);
-    printf("  %s\n",clue);
-    free(clue);
+    wordle(rword,word);
 
     if(!strcmp(rword,word)) {
       puts("you got it");
