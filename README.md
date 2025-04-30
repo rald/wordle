@@ -1,8 +1,6 @@
 # textbased game wordle using c-language
 
-capital letter -> correctly placed
-
-small letter   -> misplaced
-
-question mark  -> letter not found
+capital letter -> correctly placed  
+small letter   -> misplaced  
+question mark  -> letter not found  
 
